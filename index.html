@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AW-autocare — Professionel bilpleje og bilrens</title>
+<meta name="description" content="AW-autocare tilbyder professionel bil detailing og bilrens til lille bil, mellem bil og SUV/stor bil. Book din tid online i dag.">
+<style>
+/* ==========================================================================
+   AW-autocare — Design tokens (v2)
+   Palette: strictly black / gray / white, no other hues.
+   Type: "Fraunces" (serif display, italic for emphasis) + "JetBrains Mono"
+   (technical uppercase labels/buttons/eyebrows) + "Inter" (body copy).
+   Signature: single-stroke line-art car silhouette; soft grayscale vignette.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,500&family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --black:      #0a0a0a;
+  --charcoal:   #1a1a1a;
+  --gray-900:   #2c2c2c;
+  --gray-dark:  #55575a;
+  --gray:       #8a8c8f;
+  --gray-line:  #dcdcdc;
+  --off-white:  #f2f2f0;
+  --white:      #ffffff;
+
+  --display: 'Fraunces', Georgia, serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  --body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --max-w: 1180px;
+  --radius: 2px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+html, body{ margin:0; padding:0; }
+body{
+  font-family: var(--body);
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg{ display:block; max-width:100%; }
+a{ color: inherit; text-decoration:none; }
+ul{ list-style:none; margin:0; padding:0; }
+h1,h2,h3,h4{ font-family: var(--display); font-weight:600; letter-spacing:-.01em; margin:0; }
+p{ margin:0; }
+
+.container{
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+  outline: 2px solid var(--black);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior:auto !important; }
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.7em;
+  font-family: var(--mono);
+  font-weight:600;
+  font-size: 11.5px;
+  letter-spacing:.2em;
+  text-transform: uppercase;
+  color: var(--gray-dark);
+}
+.eyebrow::before{
+  content:"";
+  width: 22px;
+  height:1px;
+  background: var(--gray-dark);
+}
+.section-dark .eyebrow,
+.hero .eyebrow{ color: var(--gray-line); }
+.section-dark .eyebrow::before,
+.hero .eyebrow::before{ background: var(--gray-line); }
+
+/* ---------- Header / Nav ---------- */
+.site-header{
+  position: sticky;
+  top:0;
+  z-index: 100;
+  background: var(--black);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  height: 78px;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo-mark{
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family: var(--mono);
+  font-weight:700;
+  font-size: 14px;
+  letter-spacing: .02em;
+  color: var(--white);
+  flex-shrink:0;
+}
+.logo-word{
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 21px;
+  color: var(--white);
+  letter-spacing: .01em;
+}
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap: 34px;
+}
+.nav-links a{
+  color: var(--gray-line);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  position: relative;
+  padding: 6px 0;
+  transition: color .2s var(--ease);
+}
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:0;
+  width:0%;
+  height:1px;
+  background: var(--white);
+  transition: width .25s var(--ease);
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"]{ color: var(--white); }
+.nav-links a:hover::after,
+.nav-links a[aria-current="page"]::after{ width:100%; }
+
+.nav-cta{
+  display:inline-block;
+  background: var(--white);
+  color: var(--black) !important;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform: uppercase;
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  transition: background .2s var(--ease), transform .2s var(--ease);
+}
+.nav-cta:hover{ background: var(--gray-line); transform: translateY(-1px); }
+
+.menu-toggle{
+  display:none;
+  background:none;
+  border:0;
+  padding:8px;
+  cursor:pointer;
+}
+.menu-toggle span{
+  display:block;
+  width:24px;
+  height:2px;
+  background: var(--white);
+  margin: 5px 0;
+  transition: transform .25s var(--ease), opacity .25s var(--ease);
+}
+.menu-toggle.is-open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.menu-toggle.is-open span:nth-child(2){ opacity:0; }
+.menu-toggle.is-open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 860px){
+  .nav-links{
+    position:absolute;
+    top:78px; left:0; right:0;
+    background: var(--black);
+    flex-direction: column;
+    align-items: flex-start;
+    gap:0;
+    max-height:0;
+    overflow:hidden;
+    transition: max-height .3s var(--ease);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .nav-links.is-open{ max-height: 360px; }
+  .nav-links a{ padding: 16px 28px; width:100%; }
+  .nav-links a::after{ display:none; }
+  .nav-cta{ margin: 8px 28px 20px; }
+  .menu-toggle{ display:block; }
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding: 15px 28px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight:700;
+  letter-spacing:.07em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor:pointer;
+  transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+}
+.btn-primary{ background: var(--black); color: var(--white); }
+.btn-primary:hover{ background: var(--charcoal); transform: translateY(-1px); }
+.btn-ghost{ background: transparent; color: var(--black); border-color: var(--black); }
+.btn-ghost:hover{ background: var(--black); color: var(--white); }
+.btn-on-dark{ background: var(--white); color: var(--black); }
+.btn-on-dark:hover{ background: var(--gray-line); transform: translateY(-1px); }
+.btn-ghost-on-dark{ background: transparent; color: var(--white); border-color: rgba(255,255,255,.45); }
+.btn-ghost-on-dark:hover{ border-color: var(--white); background: rgba(255,255,255,.08); }
+.btn-block{ width:100%; }
+
+/* ---------- Divider ---------- */
+.wipe-divider{ position: relative; height: 46px; overflow: hidden; }
+.wipe-divider svg{ width:100%; height:100%; }
+
+/* ---------- Hero ---------- */
+.hero{
+  background:
+    radial-gradient(ellipse 900px 500px at 82% -10%, rgba(255,255,255,.06), transparent 60%),
+    linear-gradient(180deg, #050505 0%, var(--black) 55%, var(--charcoal) 100%);
+  color: var(--white);
+  padding: 76px 0 0;
+  position: relative;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 40px;
+  align-items:center;
+  padding-bottom: 40px;
+  position:relative;
+  z-index:2;
+}
+.hero-kicker{ margin-bottom: 22px; }
+.hero h1{
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 1.02;
+  color: var(--white);
+  max-width: 12ch;
+  font-weight: 600;
+}
+.hero h1 em{
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gray-line);
+}
+.hero p.lede{
+  font-family: var(--body);
+  font-size: 17px;
+  color: var(--gray-line);
+  max-width: 46ch;
+  margin-top: 22px;
+  font-weight: 400;
+}
+.hero-actions{
+  display:flex;
+  gap: 16px;
+  margin-top: 34px;
+  flex-wrap: wrap;
+}
+.hero-art{ position: relative; z-index:1; }
+.hero-art svg{ width:100%; height:auto; overflow: visible; }
+.car-line{
+  fill:none;
+  stroke: rgba(255,255,255,.85);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.car-line--dim{ stroke: rgba(255,255,255,.32); stroke-width: 1; }
+.car-ground{ stroke: rgba(255,255,255,.18); stroke-width: 1; }
+.car-draw{
+  stroke-dasharray: 2600;
+  stroke-dashoffset: 2600;
+  animation: draw-car 2.2s var(--ease) forwards .2s;
+}
+@keyframes draw-car{ to{ stroke-dashoffset: 0; } }
+
+@media (max-width: 900px){
+  .hero-grid{ grid-template-columns: 1fr; }
+  .hero-art{ order:-1; max-width: 420px; margin: 0 auto; }
+}
+
+/* ---------- Sections ---------- */
+section{ padding: 88px 0; }
+.section-head{ max-width: 640px; margin-bottom: 52px; }
+.section-head h2{ font-size: clamp(32px, 4vw, 44px); margin-top: 14px; }
+.section-head h2 em{ font-style: italic; font-weight:500; }
+.section-head p{ font-family: var(--body); color: var(--gray-dark); margin-top: 14px; font-size: 16px; }
+.section-dark{ background: var(--black); color: var(--white); }
+.section-dark .section-head p{ color: var(--gray-line); }
+.section-off{ background: var(--off-white); }
+
+/* ---------- Feature list ---------- */
+.feature-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--gray-line);
+  border: 1px solid var(--gray-line);
+}
+.feature{ background: var(--white); padding: 40px 32px; }
+.feature .num{ font-family: var(--mono); font-size: 13px; color: var(--gray); letter-spacing:.1em; }
+.feature h3{ font-family: var(--body); font-weight:700; font-size: 18px; margin-top: 14px; }
+.feature p{ font-size: 14.5px; color: var(--gray-dark); margin-top: 10px; }
+@media (max-width: 760px){ .feature-grid{ grid-template-columns: 1fr; } }
+
+/* ---------- Pricing / package cards ---------- */
+.package-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.package-card{
+  border: 1px solid var(--gray-line);
+  border-radius: var(--radius);
+  padding: 36px 30px 30px;
+  display:flex;
+  flex-direction:column;
+  background: var(--white);
+  transition: border-color .2s var(--ease), transform .2s var(--ease), box-shadow .2s var(--ease);
+  position:relative;
+}
+.package-card:hover{ border-color: var(--black); transform: translateY(-4px); box-shadow: 0 18px 34px rgba(0,0,0,.08); }
+.package-card.is-featured{ border-color: var(--black); background: var(--black); color: var(--white); }
+.package-card.is-featured .package-desc,
+.package-card.is-featured .package-list li{ color: var(--gray-line); }
+.package-card.is-featured .package-list li::before{ color: var(--white); }
+.package-tag{
+  position:absolute; top:-1px; right: 24px;
+  background: var(--black); color: var(--white);
+  font-family: var(--mono);
+  font-size: 10.5px; font-weight:700; letter-spacing:.12em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 0 0 3px 3px;
+}
+.package-card.is-featured .package-tag{ background: var(--white); color: var(--black); }
+.package-name{
+  font-family: var(--mono); font-weight: 700; font-size: 12px;
+  letter-spacing:.14em; text-transform: uppercase; color: var(--gray-dark);
+}
+.package-card.is-featured .package-name{ color: var(--gray-line); }
+.package-price{ font-family: var(--display); font-weight:600; font-size: 56px; line-height: 1; margin-top: 10px; }
+.package-price sup{ font-family: var(--mono); font-size: 14px; font-weight:600; margin-left: 4px; top:-1.2em; }
+.package-desc{ font-size: 14.5px; color: var(--gray-dark); margin-top: 10px; }
+.package-list{ margin-top: 24px; flex:1; }
+.package-list li{
+  font-size: 14.5px; padding: 9px 0; border-top: 1px solid var(--gray-line);
+  color: var(--charcoal); display:flex; gap:10px;
+}
+.package-card.is-featured .package-list li{ border-top-color: rgba(255,255,255,.15); }
+.package-list li::before{ content:"—"; color: var(--gray); flex-shrink:0; }
+.package-card .btn{ margin-top: 28px; }
+@media (max-width: 900px){ .package-grid{ grid-template-columns: 1fr; } }
+
+/* ---------- Steps (process) ---------- */
+.steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+.step .step-num{ font-family: var(--mono); font-size: 34px; color: rgba(255,255,255,.28); }
+.step h4{ font-family: var(--body); font-weight:700; font-size: 15px; margin-top: 8px; }
+.step p{ font-size: 14px; color: var(--gray-line); margin-top: 8px; }
+@media (max-width: 900px){ .steps{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 560px){ .steps{ grid-template-columns: 1fr; } }
+
+/* ---------- CTA band ---------- */
+.cta-band{ background: var(--black); color: var(--white); padding: 70px 0; text-align:center; }
+.cta-band h2{ font-size: clamp(30px,4vw,44px); }
+.cta-band h2 em{ font-style:italic; font-weight:500; }
+.cta-band p{ color: var(--gray-line); margin-top: 14px; font-family: var(--body); }
+.cta-band .hero-actions{ justify-content:center; margin-top: 30px; }
+
+/* ---------- Forms ---------- */
+.form-card{ background: var(--white); border: 1px solid var(--gray-line); padding: 40px; border-radius: var(--radius); }
+.form-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width:640px){ .form-row{ grid-template-columns: 1fr; } }
+
+.field{ margin-bottom: 22px; }
+.field label{
+  display:block; font-family: var(--mono); font-size: 11.5px; font-weight:700;
+  letter-spacing:.06em; text-transform: uppercase; color: var(--gray-dark); margin-bottom: 8px;
+}
+.field input, .field select, .field textarea{
+  width:100%; border: 1px solid var(--gray-line); border-radius: var(--radius);
+  padding: 13px 14px; font-family: var(--body); font-size: 15px; color: var(--black);
+  background: var(--white); transition: border-color .2s var(--ease);
+}
+.field input:focus, .field select:focus, .field textarea:focus{ border-color: var(--black); outline: none; }
+.field textarea{ resize: vertical; min-height: 110px; }
+.field-hint{ font-size:12.5px; color: var(--gray); margin-top:6px; }
+
+.package-choice{ display:grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+@media (max-width:640px){ .package-choice{ grid-template-columns: 1fr; } }
+.package-choice input{ position:absolute; opacity:0; pointer-events:none; }
+.package-choice label{
+  display:block; border: 1px solid var(--gray-line); border-radius: var(--radius);
+  padding: 16px; cursor:pointer; transition: border-color .2s var(--ease), background .2s var(--ease);
+  text-transform:none; font-weight:500;
+}
+.package-choice label .pc-name{ display:block; font-weight:700; font-size: 14.5px; color: var(--black); margin-bottom: 3px; }
+.package-choice label .pc-price{ display:block; font-family: var(--mono); font-size: 12.5px; color: var(--gray-dark); }
+.package-choice input:checked + label{ border-color: var(--black); background: var(--off-white); }
+.package-choice input:focus-visible + label{ outline: 2px solid var(--black); outline-offset: 2px; }
+
+.form-success{ display:none; text-align:center; padding: 60px 20px; }
+.form-success.is-visible{ display:block; }
+.form-card.is-hidden{ display:none; }
+.form-success svg{ margin: 0 auto 20px; }
+.form-success h3{ font-family: var(--body); font-weight:700; font-size:22px; }
+.form-success p{ color: var(--gray-dark); margin-top:10px; }
+
+/* ---------- Info blocks (contact page) ---------- */
+.info-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+@media (max-width: 900px){ .info-grid{ grid-template-columns: 1fr; gap:40px; } }
+
+.info-list{ margin-top: 30px; }
+.info-list li{
+  padding: 20px 0; border-top: 1px solid var(--gray-line);
+  display:grid; grid-template-columns: 120px 1fr; gap: 16px;
+}
+.info-list li:last-child{ border-bottom: 1px solid var(--gray-line); }
+.info-list .label{ font-family: var(--mono); font-size: 11.5px; font-weight:700; letter-spacing:.08em; text-transform: uppercase; color: var(--gray); }
+.info-list .value{ font-size: 15px; }
+.info-list .value a:hover{ text-decoration: underline; }
+
+.map-block{
+  background: var(--charcoal); color: var(--white); border-radius: var(--radius);
+  min-height: 340px; display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.map-block .map-pin{ text-align:center; padding: 30px; }
+.map-block .map-pin p{ color: var(--gray-line); font-family: var(--mono); font-size:12.5px; margin-top:8px; }
+
+/* ---------- Footer ---------- */
+.site-footer{ background: var(--black); color: var(--gray-line); padding: 56px 0 28px; }
+.footer-grid{
+  display:grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px;
+  padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.1);
+}
+@media (max-width: 760px){ .footer-grid{ grid-template-columns: 1fr; gap: 30px; } }
+.footer-logo{ font-family: var(--display); font-style:italic; font-weight:500; font-size: 22px; color: var(--white); }
+.footer-grid p{ font-size: 14px; color: var(--gray); margin-top: 14px; max-width: 34ch; }
+.footer-col h5{
+  font-family: var(--mono); font-size: 11.5px; font-weight:700; letter-spacing:.1em;
+  text-transform: uppercase; color: var(--white); margin-bottom: 16px;
+}
+.footer-col li{ margin-bottom: 10px; }
+.footer-col a{ font-size: 14px; color: var(--gray-line); transition: color .2s; }
+.footer-col a:hover{ color: var(--white); }
+.footer-bottom{
+  display:flex; justify-content: space-between; padding-top: 24px;
+  font-family: var(--mono); font-size: 11.5px; color: var(--gray); flex-wrap:wrap; gap: 10px;
+}
+
+.text-center{ text-align:center; }
+.mt-0{ margin-top:0; }
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">AW</span>
+      <span class="logo-word">Autocare</span>
+    </a>
+    <nav>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" aria-current="page">Forside</a></li>
+        <li><a href="pakker.html">Pakker</a></li>
+        <li><a href="booking.html">Booking</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="booking.html" class="nav-cta">Book nu</a></li>
+      </ul>
+    </nav>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Åbn menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="hero-kicker">
+          <span class="eyebrow">Bil detailing &amp; bilrens</span>
+        </div>
+        <h1>Din bil fortjener <em>en ny finish.</em></h1>
+        <p class="lede">Hos AW-autocare giver vi din bil en grundig og professionel omgang – udvendig og indvendig. Minutiøst udført, hver gang, uanset om du kører i en lille bybil eller en stor SUV.</p>
+        <div class="hero-actions">
+          <a href="booking.html" class="btn btn-on-dark">Book din tid</a>
+          <a href="pakker.html" class="btn btn-ghost-on-dark">Se vores pakker</a>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+          <!-- single-stroke car silhouette, unfilled -->
+          <path class="car-line car-draw" d="M10,168
+            C55,168 70,150 92,140
+            C112,131 132,131 152,140
+            C174,150 188,168 232,168
+            L280,168
+            C286,140 300,112 322,94
+            C344,76 372,66 402,64
+            L440,64
+            C466,66 488,78 504,98
+            C516,113 522,132 528,150
+            C534,163 546,168 560,168
+            L610,168
+            C630,150 645,131 665,131
+            C685,131 700,150 690,168"/>
+
+          <!-- wheel arches -->
+          <path class="car-line--dim car-draw" d="M100,168 A32,32 0 0 1 176,168" />
+          <path class="car-line--dim car-draw" d="M568,168 A32,32 0 0 1 644,168" />
+
+          <!-- window line -->
+          <path class="car-line--dim car-draw" d="M322,94 C338,80 372,70 402,68 M440,64 C462,66 480,76 494,92"/>
+
+          <!-- door seam -->
+          <path class="car-line--dim car-draw" d="M470,66 L466,168"/>
+
+          <!-- mirror -->
+          <path class="car-line car-draw" d="M320,96 C312,92 302,94 300,100"/>
+
+          <!-- ground line -->
+          <path class="car-ground" d="M0,196 H700" stroke-dasharray="3 7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="wipe-divider" aria-hidden="true">
+      <svg viewBox="0 0 1180 46" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,20 C 200,45 400,0 600,22 C 800,44 1000,4 1180,24 L1180,46 L0,46 Z" fill="#ffffff"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Hvorfor AW-autocare</span>
+        <h2>Håndværk, <em>ikke hurtig gennemkørsel.</em></h2>
+        <p>Vi tager os god tid til hver bil og bruger kun produkter, vi selv ville bruge på vores egne biler.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <span class="num">01</span>
+          <h3>Erfarne hænder</h3>
+          <p>Hver bil behandles af nogen, der ved præcis, hvordan lak, plast og stof skal behandles forskelligt.</p>
+        </div>
+        <div class="feature">
+          <span class="num">02</span>
+          <h3>Kvalitetsprodukter</h3>
+          <p>Vi bruger professionelle rens- og plejeprodukter, der beskytter bilen frem for blot at pynte den midlertidigt.</p>
+        </div>
+        <div class="feature">
+          <span class="num">03</span>
+          <h3>Skræddersyet efter bilen</h3>
+          <p>Lille bil, mellem bil eller SUV — pakken er tilpasset bilens størrelse, ikke en standardløsning for alle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PACKAGE TEASER ============ -->
+  <section class="section-off">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Priser</span>
+        <h2>Tre pakker. <em>Én fast pris.</em></h2>
+        <p>Vælg den pakke, der passer til din bils størrelse. Ingen overraskelser på regningen.</p>
+      </div>
+
+      <div class="package-grid">
+        <div class="package-card">
+          <span class="package-name">Lille bil</span>
+          <div class="package-price">499<sup>kr</sup></div>
+          <p class="package-desc">Til bybiler og mindre modeller.</p>
+          <ul class="package-list">
+            <li>Udvendig håndvask &amp; tørring</li>
+            <li>Fælgrens</li>
+            <li>Støvsugning &amp; indvendig aftørring</li>
+          </ul>
+          <a href="pakker.html" class="btn btn-ghost btn-block">Se detaljer</a>
+        </div>
+
+        <div class="package-card is-featured">
+          <span class="package-tag">Mest valgt</span>
+          <span class="package-name">Mellem bil</span>
+          <div class="package-price">699<sup>kr</sup></div>
+          <p class="package-desc">Til stationcars og mellemklassebiler.</p>
+          <ul class="package-list">
+            <li>Alt fra Lille bil</li>
+            <li>Voksbehandling af lak</li>
+            <li>Rens af sæder &amp; tæpper</li>
+          </ul>
+          <a href="pakker.html" class="btn btn-on-dark btn-block">Se detaljer</a>
+        </div>
+
+        <div class="package-card">
+          <span class="package-name">SUV / stor bil</span>
+          <div class="package-price">999<sup>kr</sup></div>
+          <p class="package-desc">Til SUV, varebil og store familiebiler.</p>
+          <ul class="package-list">
+            <li>Alt fra Mellem bil</li>
+            <li>Polering af lak</li>
+            <li>Grundig rens af bagagerum</li>
+          </ul>
+          <a href="pakker.html" class="btn btn-ghost btn-block">Se detaljer</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="section-dark">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Sådan foregår det</span>
+        <h2>Fra booking til <em>blank bil.</em></h2>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <h4>Vælg pakke</h4>
+          <p>Find den pakke, der passer til din bils størrelse.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h4>Book en tid</h4>
+          <p>Udfyld booking­formularen med dine ønskede dato og klokkeslæt.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h4>Vi tager os af bilen</h4>
+          <p>Din bil bliver behandlet grundigt, indvendigt og udvendigt.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">04</span>
+          <h4>Hent en ny finish</h4>
+          <p>Du henter en ren, frisk og velplejet bil.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-band">
+    <div class="container">
+      <h2>Klar til <em>en ny finish?</em></h2>
+      <p>Book din tid i dag — det tager under to minutter.</p>
+      <div class="hero-actions">
+        <a href="booking.html" class="btn btn-on-dark">Book nu</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">AW-autocare</div>
+        <p>Professionel bil detailing og bilrens. Din bil fortjener en ny finish.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Sider</h5>
+        <ul>
+          <li><a href="index.html">Forside</a></li>
+          <li><a href="pakker.html">Pakker</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Kontakt</h5>
+        <ul>
+          <li><a href="tel:+4512345678">+45 12 34 56 78</a></li>
+          <li><a href="mailto:info@aw-autocare.dk">info@aw-autocare.dk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AW-autocare. Alle rettigheder forbeholdes.</span>
+      <span>CVR: 12345678</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ==========================================================================
+// AW-autocare — shared behaviour
+// ==========================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------- Mobile nav toggle ---------- */
+  const toggle = document.querySelector('.menu-toggle');
+  const links = document.querySelector('.nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('is-open');
+      toggle.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        links.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  /* ---------- Booking form ---------- */
+  const bookingForm = document.getElementById('booking-form');
+  if (bookingForm) {
+
+    // Pre-select package if it arrives via ?pakke=lille / mellem / suv
+    const params = new URLSearchParams(window.location.search);
+    const pre = params.get('pakke');
+    if (pre) {
+      const input = bookingForm.querySelector(`input[name="pakke"][value="${pre}"]`);
+      if (input) input.checked = true;
+    }
+
+    // Don't allow picking a date in the past
+    const dateInput = bookingForm.querySelector('#dato');
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.setAttribute('min', today);
+    }
+
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (!bookingForm.checkValidity()) {
+        bookingForm.reportValidity();
+        return;
+      }
+
+      // NOTE for developer wiring this up to a real backend:
+      // Replace this block with an actual request, e.g.
+      //   fetch('/api/booking', { method: 'POST', body: new FormData(bookingForm) })
+      // or point the <form> action at a booking/email service (Formspree, Netlify Forms osv.).
+      // For now the request is simulated so the page works stand-alone.
+
+      const data = new FormData(bookingForm);
+      const pakkeLabels = { lille: 'Lille bil — 499 kr', mellem: 'Mellem bil — 699 kr', suv: 'SUV / stor bil — 999 kr' };
+      const chosen = pakkeLabels[data.get('pakke')] || '';
+
+      const summaryEl = document.getElementById('booking-summary');
+      if (summaryEl) {
+        summaryEl.innerHTML = `
+          <li><span class="label">Navn</span><span class="value">${escapeHTML(data.get('navn'))}</span></li>
+          <li><span class="label">Pakke</span><span class="value">${escapeHTML(chosen)}</span></li>
+          <li><span class="label">Dato</span><span class="value">${escapeHTML(data.get('dato'))} kl. ${escapeHTML(data.get('tid'))}</span></li>
+        `;
+      }
+
+      bookingForm.closest('.form-card').classList.add('is-hidden');
+      document.getElementById('booking-success').classList.add('is-visible');
+      document.getElementById('booking-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  /* ---------- Contact form ---------- */
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+      // Same note as above — wire this up to a real endpoint or mail service.
+      contactForm.closest('.form-card').classList.add('is-hidden');
+      document.getElementById('contact-success').classList.add('is-visible');
+    });
+  }
+
+  function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+});
+
+</script>
+</body>
+</html>
